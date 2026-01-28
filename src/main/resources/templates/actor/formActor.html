@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Películas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" id="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <h2 th:text="${titulo}" class="text-secondary border border-success border-top-0 border-left-0 border-right-0"></h2>
+    <form th:action="@{/aactores/save}" method="post" th:object="${actor}">
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+            Por favor corrija los siguientes errores.
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombre}" id="nombre" name="nombre" placeholder="Escriba aquí el nombre del actor" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" th:field="*{fechaNacimiento}" id="fechaNacimiento" name="fechaNacimiento" placeholder="Escriba aquí la fecha de nacimiento del actor" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="paisNacimiento" class="form-label">Pais de Nacimiento</label>
+            <input type="text" class="form-control" th:field="*{paisNacimiento}" id="paisNacimiento" name="paisNacimiento" placeholder="Escriba aquí el pais de nacimiento del actor" required="required">
+        </div>
+        <button type="submit" class="btn btn-dark">Guardar</button>
+        <input type="hidden" th:field="*{id}">
+    </form>
+    <hr>
+    <a class="btn btn-primary" th:href="@{/aactores/list}">Volver</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>
