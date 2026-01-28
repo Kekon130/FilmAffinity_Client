@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Películas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-icons')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <h1 class="text-center">Gestión de Películas</h1>
+    <div class="card-group">
+        <div class="card">
+            <div class="card-body">
+                <i class="bi bi-gem" style="font-size: 30px"></i>
+                <h3 class="card-title">Géneros</h3>
+                <a class="btn btn-link" th:href="@{/ggeneros/list}">Listado de Géneros</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <i class="bi bi-film" style="font-size: 30px"></i>
+                <h3 class="card-title">Películas</h3>
+                <a class="btn btn-link" th:href="@{/ppeliculas/list}">Listado de Películas</a>
+                <a class="btn btn-link" th:href="@{/ppeliculas/filter}">Filtrar Búsqueda</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <i class="bi bi-person" style="font-size: 30px"></i>
+                <h3 class="card-title">Actores</h3>
+                <a class="btn btn-link" th:href="@{/aactores/list}">Listado de Actores</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>
