@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Detalle Película</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <h2 th:text="${titulo}" class="text-secondary border border-success border-top-0 border-left-0 border-right-0"></h2>
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        <input type="text" class="form-control" th:value="${pelicula.titulo}" id="titulo" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="anioEstreno" class="form-label">Año de Estreno</label>
+        <input type="number" class="form-control" th:value="${pelicula.anioEstreno}" id="anioEstreno" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="director" class="form-label">Director</label>
+        <input type="text" class="form-control" th:value="${pelicula.director}" id="director" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="duracion" class="form-label">Duración (minutos)</label>
+        <input type="number" class="form-control" th:value="${pelicula.duracion}" id="duracion" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="pais" class="form-label">País</label>
+        <input type="text" class="form-control" th:value="${pelicula.pais}" id="pais" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="saga" class="form-label">Saga</label>
+        <input type="text" class="form-control" th:value="${pelicula.saga}" id="saga" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="sinopsis" class="form-label">Sinopsis</label>
+        <textarea class="form-control" id="sinopsis" rows="4" readonly
+                  th:text="${pelicula.sinopsis}"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Géneros</label>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                th:each="genero : ${pelicula.generos}">
+                <span th:text="${genero.nombre}"></span>
+
+                <button class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        th:data-bs-target="'#modalEliminarGenero' + ${genero.id}">
+                    Eliminar
+                </button>
+            </li>
+        </ul>
+
+        <button class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalGenero">Añadir Género</button>
+    </div>
+    <div th:each="genero : ${pelicula.generos}">
+        <div class="modal fade" th:id="'modalEliminarGenero' + ${genero.id}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Eliminar Género</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Seguro que deseas eliminar el género <strong th:text="${genero.nombre}"></strong> de esta película?
+                    </div>
+                    <div class="modal-footer">
+                        <a th:href="@{|/ppeliculas/delete/${pelicula.id}/genero/${genero.nombre}|}" class="btn btn-danger">Eliminar</a>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalGenero" tabindex="-1" aria-labelledby="modalGeneroLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/ppeliculas/genero/add}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalGeneroLabel">Añadir Género</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" th:value="${pelicula.id}">
+                        <div class="mb-3">
+                            <label for="nombreGenero" class="form-label">Nombre del Género</label>
+                            <input type="text" class="form-control" id="nombreGenero" name="nombre" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Actores</label>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                th:each="actor : ${pelicula.actores}">
+                <span th:text="${actor.nombre}"></span>
+
+                <button class="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        th:data-bs-target="'#modalEliminarActor' + ${actor.id}">
+                    Eliminar
+                </button>
+            </li>
+        </ul>
+
+        <button class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#modalActor">Añadir Actor</button>
+    </div>
+    <div th:each="actor : ${pelicula.actores}">
+        <div class="modal fade" th:id="'modalEliminarActor' + ${actor.id}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Eliminar Actor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Seguro que deseas eliminar a <strong th:text="${actor.nombre}"></strong> de esta película?
+                    </div>
+                    <div class="modal-footer">
+                        <a th:href="@{|/ppeliculas/delete/${pelicula.id}/actor/${actor.nombre}|}" class="btn btn-danger">Eliminar</a>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalActor" tabindex="-1" aria-labelledby="modalActorLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{/ppeliculas/actor/add}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalActorLabel">Añadir Actor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" th:value="${pelicula.id}">
+                        <div class="mb-3">
+                            <label for="nombreActor" class="form-label">Nombre del Actor</label>
+                            <input type="text" class="form-control" id="nombreActor" name="nombre" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3" th:if="${pelicula.portada != null}">
+        <label class="form-label">Portada</label>
+        <div>
+            <img th:src="${pelicula.portada}"
+                 alt="Portada de [[${pelicula.titulo}]]"
+                 class="img-fluid rounded"
+                 style="max-width: 300px;">
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-primary" th:href="@{/ppeliculas/list}">Volver</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>

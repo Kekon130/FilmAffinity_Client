@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Películas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" id="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <h2 th:text="${titulo}" class="text-secondary border border-success border-top-0 border-left-0 border-right-0"></h2>
+    <form th:action="@{/ppeliculas/save}" method="post" th:object="${pelicula}">
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+            Por favor corrija los siguientes errores.
+            <ul>
+                <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Titulo</label>
+            <input type="text" class="form-control" th:field="*{titulo}" id="titulo" name="titulo" placeholder="Escriba aquí el titulo de la película" required="required">
+        </div>
+        <div class="mb-3">
+            <label for="anioEstreno" class="form-label">Año de Estreno</label>
+            <input type="number" class="form-control" th:field="*{anioEstreno}" id="anioEstreno" name="anioEstreno" placeholder="Ej: 1999" required>
+        </div>
+        <div class="mb-3">
+            <label for="director" class="form-label">Director</label>
+            <input type="text" class="form-control" th:field="*{director}" id="director" name="director" placeholder="Nombre del director" required>
+        </div>
+        <div class="mb-3">
+            <label for="duracion" class="form-label">Duración (minutos)</label>
+            <input type="number" class="form-control" th:field="*{duracion}" id="duracion" name="duracion" placeholder="Ej: 120" required>
+        </div>
+        <div class="mb-3">
+            <label for="pais" class="form-label">País</label>
+            <input type="text" class="form-control" th:field="*{pais}" id="pais" name="pais" placeholder="Ej: España" required>
+        </div>
+        <div class="mb-3">
+            <label for="sinopsis" class="form-label">Sinopsis</label>
+            <textarea class="form-control" th:field="*{sinopsis}" id="sinopsis" name="sinopsis" placeholder="Escriba aquí la sinopsis" rows="4" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="portada" class="form-label">URL de la Portada</label>
+            <input type="text" class="form-control" th:field="*{portada}" id="portada" name="portada" placeholder="URL de la imagen de portada" required>
+        </div>
+        <div class="mb-3">
+            <label for="saga" class="form-label">Saga</label>
+            <input type="text" class="form-control" th:field="*{saga}" id="saga" name="saga" placeholder="Saga a la que pertenece (si aplica)">
+        </div>
+        <div class="mb-3"></div>
+        <button type="submit" class="btn btn-dark">Guardar</button>
+        <input type="hidden" th:field="*{id}">
+    </form>
+    <hr>
+    <a class="btn btn-primary" th:href="@{/ppeliculas/list}">Volver</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>

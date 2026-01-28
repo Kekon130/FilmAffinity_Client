@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Películas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" id="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="card">
+        <h2 th:text="${titulo}" class="card-header"></h2>
+        <div class="card-body">
+            <div th:if="${msg != null}" class="alert alert-success" th:text="${msg}" role="alert"></div>
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Título</th>
+                    <th scope="col">Año de Estreno</th>
+                    <th scope="col">Duración</th>
+                    <th scope="col">Saga</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="pelicula : ${peliculas}">
+                    <td th:text="${pelicula.id}"></td>
+                    <td th:text="${pelicula.titulo}"></td>
+                    <td th:text="${pelicula.anioEstreno}"></td>
+                    <td th:text="${pelicula.duracion}"></td>
+                    <td th:text="${pelicula.saga}"></td>
+                    <td>
+                        <a th:href="@{/ppeliculas/view/{id} (id=${pelicula.id})}" th:text="'Detalles'" class="btn btn-primary btn-sm" role="button" title="Ver Detalles">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/ppeliculas/edit/{id} (id=${pelicula.id})}" th:text="'Editar'" class="btn btn-warning btn-sm" role="button" title="Editar Película">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        </a>
+                        <a th:href="@{/ppeliculas/delete/{id} (id=${pelicula.id})}" th:text="'Borrar'" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Borrar Película">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav th:replace="paginator-nav :: paginator"></nav>
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-dark btn-sm" th:href="@{/ppeliculas/new}" role="button">Nuevo</a>
+    <hr>
+    <a class="btn btn-primary btn-sm" th:href="@{/}" role="button">Ir a inicio</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>

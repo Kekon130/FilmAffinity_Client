@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Películas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" style="margin-top: 50px; margin-bottom: 50px">
+    <h2 class="text-secondary border border-success border-top-0 border-left-0 border-right-0">Filtro de películas</h2>
+    <form th:action="@{/ppeliculas/list/titulo}" method="get">
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Titulo</label>
+            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ingresa el titulo">
+        </div>
+        <button type="submit" class="btn btn-success">Buscar por título</button>
+    </form>
+    <hr>
+    <form th:action="@{/ppeliculas/list/director}" method="get">
+        <div class="mb-3">
+            <label for="director" class="form-label">Director</label>
+            <input type="text" class="form-control" id="director" name="director" placeholder="Ingresa el director">
+        </div>
+        <button type="submit" class="btn btn-success">Buscar por director</button>
+    </form>
+    <hr>
+    <form th:action="@{/ppeliculas/list/saga}" method="get">
+        <div class="mb-3">
+            <label for="saga" class="form-label">Saga</label>
+            <input type="text" class="form-control" id="saga" name="saga" placeholder="Ingresa la saga de películas">
+        </div>
+        <button type="submit" class="btn btn-success">Buscar por saga</button>
+    </form>
+    <hr>
+    <a class="btn btn-primary" role="button" th:href="@{/}">Inicio</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>
