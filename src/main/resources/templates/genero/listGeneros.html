@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Películas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container", style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="card">
+        <h2 th:text="${titulo}" class="card-header"></h2>
+        <div class="card-body">
+            <div th:if="${msg != null}" class="alert alert-success" th:text="${msg}" role="alert"></div>
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="genero : ${generos}">
+                    <td th:text="${genero.id}"></td>
+                    <td th:text="${genero.nombre}"></td>
+                    <td th:text="${genero.descripcion}"></td>
+                    <td>
+                        <a th:href="@{/ppeliculas/list/genero/{nombre} (nombre=${genero.nombre})}" th:text="'Películas'" class="btn btn-primary btn-sm" role="button" title="Ver Películas">
+                            <i class="fas fa-search-plus" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/ggeneros/edit/{id} (id=${genero.id})}" th:text="'Editar'" class="btn btn-warning btn-sm" role="button" title="Editar Información">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        </a>
+                        <a th:href="@{/ggeneros/delete/{id} (id=${genero.id})}" th:text="'Borrar'" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Borrar Género">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav th:replace="~{paginator-nav :: paginator}"></nav>
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-dark" role="button" th:href="@{/ggeneros/new}">Nuevo</a>
+    <hr>
+    <a class="btn btn-primary" role="button" th:href="@{/}">Ir a inicio</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-javascript')}"></script>
+</body>
+</html>
