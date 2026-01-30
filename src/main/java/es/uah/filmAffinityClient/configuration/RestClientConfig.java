@@ -3,6 +3,7 @@ package es.uah.filmAffinityClient.configuration;
 import es.uah.filmAffinityClient.client.IActorClient;
 import es.uah.filmAffinityClient.client.IGeneroClient;
 import es.uah.filmAffinityClient.client.IPeliculaClient;
+import es.uah.filmAffinityClient.client.IUsuarioClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,5 +40,12 @@ public class RestClientConfig {
         RestClientAdapter adapter = RestClientAdapter.create(restClient);
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(IPeliculaClient.class);
+    }
+
+    @Bean
+    public IUsuarioClient usuarioRestClient(RestClient restClient) {
+        RestClientAdapter adapter = RestClientAdapter.create(restClient);
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return factory.createClient(IUsuarioClient.class);
     }
 }
