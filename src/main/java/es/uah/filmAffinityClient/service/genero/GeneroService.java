@@ -2,14 +2,12 @@ package es.uah.filmAffinityClient.service.genero;
 
 import es.uah.filmAffinityClient.client.IGeneroClient;
 import es.uah.filmAffinityClient.model.Genero;
+import es.uah.filmAffinityClient.paginator.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,7 +22,7 @@ public class GeneroService implements IGeneroService {
     @Override
     public Page<Genero> findAll(Pageable pageable) {
         List<Genero> generos = this.generoClient.findAll();
-        return this.toPage(generos, pageable);
+        return PageUtils.toPage(generos, pageable);
     }
 
     @Override
@@ -69,25 +67,5 @@ public class GeneroService implements IGeneroService {
         if (id != null && id > 0) {
             this.generoClient.deleteById(id);
         }
-    }
-
-    private Page<Genero> toPage(List<Genero> generos, Pageable pageable) {
-        if (generos == null || generos.isEmpty()) {
-            return Page.empty(pageable);
-        }
-
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-
-        List<Genero> subList;
-        if (generos.size() <= startItem) {
-            subList = Collections.emptyList();
-        } else {
-            int index = Math.min(startItem + pageSize, generos.size());
-            subList = generos.subList(startItem, index);
-        }
-
-        return new PageImpl<>(subList, PageRequest.of(currentPage, pageSize), generos.size());
     }
 }

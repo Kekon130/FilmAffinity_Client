@@ -2,19 +2,17 @@ package es.uah.filmAffinityClient.service.actor;
 
 import es.uah.filmAffinityClient.client.IActorClient;
 import es.uah.filmAffinityClient.model.Actor;
+import es.uah.filmAffinityClient.paginator.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class ActorService implements IActorService {
-    private IActorClient actorClient;
+    private final IActorClient actorClient;
 
     @Autowired
     public ActorService(IActorClient actorClient) {
@@ -24,7 +22,7 @@ public class ActorService implements IActorService {
     @Override
     public Page<Actor> findAll(Pageable pageable) {
         List<Actor> actores = this.actorClient.findAll();
-        return this.toPage(actores, pageable);
+        return PageUtils.toPage(actores, pageable);
     }
 
     @Override
@@ -60,25 +58,5 @@ public class ActorService implements IActorService {
         if (id != null && id > 0) {
             this.actorClient.deleteById(id);
         }
-    }
-
-    private Page<Actor> toPage(List<Actor> actores, Pageable pageable) {
-        if (actores == null || actores.isEmpty()) {
-            return Page.empty(pageable);
-        }
-
-        int pageSize = pageable.getPageSize();
-        int pageNumber = pageable.getPageNumber();
-        int startItem = pageSize * pageNumber;
-
-        List<Actor> subList;
-        if (actores.size() <= startItem) {
-            subList = Collections.emptyList();
-        } else {
-            int index = Math.min(startItem + pageSize, actores.size());
-            subList = actores.subList(startItem, index);
-        }
-
-        return new PageImpl<>(subList, PageRequest.of(pageNumber, pageSize), actores.size());
     }
 }

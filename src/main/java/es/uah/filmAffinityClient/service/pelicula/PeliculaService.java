@@ -2,19 +2,17 @@ package es.uah.filmAffinityClient.service.pelicula;
 
 import es.uah.filmAffinityClient.client.IPeliculaClient;
 import es.uah.filmAffinityClient.model.Pelicula;
+import es.uah.filmAffinityClient.paginator.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class PeliculaService implements IPeliculaService {
-    private IPeliculaClient peliculaClient;
+    private final IPeliculaClient peliculaClient;
 
     @Autowired
     public PeliculaService(IPeliculaClient peliculaClient) {
@@ -24,7 +22,7 @@ public class PeliculaService implements IPeliculaService {
     @Override
     public Page<Pelicula> findAll(Pageable pageable) {
         List<Pelicula> peliculas = this.peliculaClient.findAll();
-        return this.toPage(peliculas, pageable);
+        return PageUtils.toPage(peliculas, pageable);
     }
 
     @Override
@@ -41,7 +39,7 @@ public class PeliculaService implements IPeliculaService {
         Page<Pelicula> peliculas = null;
         if (titulo != null && !titulo.isBlank()) {
             List<Pelicula> list  = this.peliculaClient.findByTituloIgnoreCase(titulo);
-            peliculas = this.toPage(list, pageable);
+            peliculas = PageUtils.toPage(list, pageable);
         }
         return peliculas;
     }
@@ -51,7 +49,7 @@ public class PeliculaService implements IPeliculaService {
         Page<Pelicula> peliculas = Page.empty(pageable);
         if (director != null && !director.isBlank()) {
             List<Pelicula> list = this.peliculaClient.findByDirectorContainsIgnoreCase(director);
-            peliculas = this.toPage(list, pageable);
+            peliculas = PageUtils.toPage(list, pageable);
         }
         return peliculas;
     }
@@ -61,7 +59,7 @@ public class PeliculaService implements IPeliculaService {
         Page<Pelicula> peliculas = Page.empty(pageable);
         if (saga != null && !saga.isBlank()) {
             List<Pelicula> list = this.peliculaClient.findBySagaIgnoreCase(saga);
-            peliculas = this.toPage(list, pageable);
+            peliculas = PageUtils.toPage(list, pageable);
         }
         return peliculas;
     }
@@ -71,7 +69,7 @@ public class PeliculaService implements IPeliculaService {
         Page<Pelicula> peliculas = Page.empty(pageable);
         if (genero != null && !genero.isBlank()) {
             List<Pelicula> list = this.peliculaClient.findByGenerosNombreIgnoreCase(genero);
-            peliculas = this.toPage(list, pageable);
+            peliculas = PageUtils.toPage(list, pageable);
         }
         return peliculas;
     }
@@ -81,7 +79,7 @@ public class PeliculaService implements IPeliculaService {
         Page<Pelicula> peliculas = Page.empty(pageable);
         if (actor != null && !actor.isBlank()) {
             List<Pelicula> list = this.peliculaClient.findByActoresIgnoreCase(actor);
-            peliculas = this.toPage(list, pageable);
+            peliculas = PageUtils.toPage(list, pageable);
         }
         return peliculas;
     }
@@ -110,26 +108,6 @@ public class PeliculaService implements IPeliculaService {
         if (id != null && id > 0) {
             this.peliculaClient.deleteById(id);
         }
-    }
-
-    private Page<Pelicula> toPage(List<Pelicula> peliculas, Pageable pageable) {
-        if (peliculas == null || peliculas.isEmpty()) {
-            return Page.empty(pageable);
-        }
-
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = pageSize * currentPage;
-
-        List<Pelicula> subList;
-        if (peliculas.size() <= startItem) {
-            subList = Collections.emptyList();
-        } else {
-            int index = Math.min(startItem + pageSize, peliculas.size());
-            subList = peliculas.subList(startItem, index);
-        }
-
-        return new PageImpl<>(subList, PageRequest.of(currentPage, pageSize), peliculas.size());
     }
 
     @Override
