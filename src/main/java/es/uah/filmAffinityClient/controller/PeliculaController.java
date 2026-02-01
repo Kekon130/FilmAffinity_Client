@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("/ppeliculas")
 public class PeliculaController {
-    private IPeliculaService peliculaService;
+    private final IPeliculaService peliculaService;
 
     @Autowired
     public PeliculaController(IPeliculaService peliculaService) {
@@ -42,7 +42,7 @@ public class PeliculaController {
     }
 
     @GetMapping("/view/{id}")
-    public String viewPelicula(Model model, @PathVariable("id") int id) {
+    public String viewPelicula(Model model, @PathVariable int id) {
         Pelicula pelicula = this.peliculaService.findById(id);
         model.addAttribute("titulo", "Detalles de la película " + pelicula.getTitulo());
         model.addAttribute("pelicula", pelicula);
@@ -68,7 +68,7 @@ public class PeliculaController {
     @GetMapping("/list/titulo")
     public String peliculasListTitulo(Model model, @RequestParam("titulo") String titulo, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Pelicula> peliculas = null;
+        Page<Pelicula> peliculas;
 
         if (titulo == null || titulo.isBlank()) {
             peliculas = this.peliculaService.findAll(pageable);
@@ -86,7 +86,7 @@ public class PeliculaController {
     @GetMapping("/list/director")
     public String director(Model model, @RequestParam("director") String director, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Pelicula> peliculas = null;
+        Page<Pelicula> peliculas;
 
         if (director == null || director.isBlank()) {
             peliculas = this.peliculaService.findAll(pageable);
@@ -104,7 +104,7 @@ public class PeliculaController {
     @GetMapping("/list/saga")
     public  String saga(Model model, @RequestParam("saga") String saga, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Pelicula> peliculas = null;
+        Page<Pelicula> peliculas;
 
         if (saga == null || saga.isBlank()) {
             peliculas = this.peliculaService.findAll(pageable);
@@ -120,9 +120,9 @@ public class PeliculaController {
     }
 
     @GetMapping("/list/genero/{nombre}")
-    public String generos(Model model, @PathVariable("nombre") String nombre, @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String generos(Model model, @PathVariable String nombre, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Pelicula> peliculas = null;
+        Page<Pelicula> peliculas;
 
         if (nombre == null || nombre.isBlank()) {
             peliculas = this.peliculaService.findAll(pageable);
@@ -138,9 +138,9 @@ public class PeliculaController {
     }
 
     @GetMapping("/list/actor/{nombre}")
-    public String actores(Model model, @PathVariable("nombre") String nombre, @RequestParam(name = "page", defaultValue = "0") int page) {
+    public String actores(Model model, @PathVariable String nombre, @RequestParam(name = "page", defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 5);
-        Page<Pelicula> peliculas = null;
+        Page<Pelicula> peliculas;
 
         if (nombre == null || nombre.isBlank()) {
             peliculas = this.peliculaService.findAll(pageable);
@@ -156,7 +156,7 @@ public class PeliculaController {
     }
 
     @GetMapping("/edit/{id}")
-    public String editPelicula(Model model, @PathVariable("id") Integer id) {
+    public String editPelicula(Model model, @PathVariable Integer id) {
         Pelicula pelicula = this.peliculaService.findById(id);
         model.addAttribute("titulo", "Editar Película");
         model.addAttribute("pelicula", pelicula);
@@ -164,7 +164,7 @@ public class PeliculaController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePelicula(Model model, @PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+    public String deletePelicula(Model model, @PathVariable Integer id, RedirectAttributes redirectAttributes) {
         this.peliculaService.delete(id);
         redirectAttributes.addFlashAttribute("msg", "Los datos de la película se han borrado correctamente.");
         return "redirect:/ppeliculas/list";
@@ -178,7 +178,7 @@ public class PeliculaController {
     }
 
     @GetMapping("/delete/{id}/actor/{nombre}")
-    public String deleteActor(@PathVariable("id") Integer id, @PathVariable("nombre") String nombre, RedirectAttributes attributes) {
+    public String deleteActor(@PathVariable Integer id, @PathVariable String nombre, RedirectAttributes attributes) {
         this.peliculaService.deleteActor(id, nombre);
         attributes.addFlashAttribute("msg", "El actor ha sido borrado correctamente.");
         return "redirect:/ppeliculas/view/" + id;
@@ -192,7 +192,7 @@ public class PeliculaController {
     }
 
     @GetMapping("/delete/{id}/genero/{nombre}")
-    public String deleteGenero(@PathVariable("id") Integer id, @PathVariable("nombre") String nombre, RedirectAttributes attributes) {
+    public String deleteGenero(@PathVariable Integer id, @PathVariable String nombre, RedirectAttributes attributes) {
         this.peliculaService.deleteGenero(id, nombre);
         attributes.addFlashAttribute("msg", "El género cinematográfico ha sido eliminado correctamente.");
         return  "redirect:/ppeliculas/view/" + id;

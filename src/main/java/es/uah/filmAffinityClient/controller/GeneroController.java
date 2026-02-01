@@ -32,7 +32,7 @@ public class GeneroController {
 
     @PostMapping("/save")
     public String saveGenero(Model model, Genero genero, RedirectAttributes attributes) {
-            if (genero.getId() != null && genero.getId() > 0) {
+        if (genero.getId() != null && genero.getId() > 0) {
             this.generoService.update(genero);
             attributes.addFlashAttribute("msg", "Los datos del género cinematográfico fueron actualizados correctamente.");
         } else {
