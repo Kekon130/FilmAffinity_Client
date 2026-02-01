@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Películas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" id="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="card">
+        <h2 th:text="${titulo}" class="card-header"></h2>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" th:value="${usuario.getUsername()}" id="nombre" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" th:value="${usuario.getEmail()}" id="email" readonly>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Rol</label>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                        th:each="rol : ${usuario.getRoles()}">
+                        <span th:text="${rol}"></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-primary btn-sm" th:href="@{/uusuarios/list}" role="button">Volver</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>

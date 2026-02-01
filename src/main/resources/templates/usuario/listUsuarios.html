@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Aplicación de Gestión de Peliculas</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" id="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="card">
+        <h2 th:text="${titulo}" class="card-header"></h2>
+        <div class="card-body">
+            <div th:if="${msg != null}" class="alert alert-success" th:text="${msg}" role="alert"></div>
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Rol</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.getId()}"></td>
+                    <td th:text="${usuario.getUsername()}"></td>
+                    <td th:text="${usuario.getEmail()}"></td>
+                    <td th:text="${usuario.getRolesAsString()}"></td>
+                    <td>
+                        <a th:href="@{/uusuarios/view/{id} (id=${usuario.id})}" th:text="'Detalles'" class="btn btn-primary btn-sm" role="button" title="Ver Detalles">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{/uusuarios/edit/{id} (id=${usuario.id})}" th:text="'Editar'" class="btn btn-warning btn-sm" role="button" title="Editar Usuario">
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                        </a>
+                        <a th:href="@{/uusuarios/delete/{id} (id=${usuario.id})}" th:text="'Borrar'" onclick="return confirm('¿Estas seguro?')" class="btn btn-danger btn-sm" role="button" title="Borrar Usuario">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <nav th:replace="~{paginator-nav :: paginator}"></nav>
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-dark btn-sm" th:href="@{/uusuarios/new}" role="button">Nuevo</a>
+    <hr>
+    <a class="btn btn-primary btn-sm" th:href="@{/}" role="button">Ir a inicio</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>

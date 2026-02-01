@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Film Affinity | Nuevo Usuario</title>
+    <link th:href="${@environment.getProperty('app.cdn.bootstrap-css')}" rel="stylesheet" />
+    <link th:href="${@environment.getProperty('app.cdn.font-awesome')}" rel="stylesheet" />
+</head>
+<body>
+<div class="container" id="container" style="margin-top: 50px; margin-bottom: 50px;">
+    <div class="card">
+        <h2 th:text="${titulo}" class="card-header"></h2>
+        <div class="card-body">
+            <form th:action="@{/uusuarios/save}" method="post" th:object="${usuario}">
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
+                    Por favor corrija los siguientes errores.
+                    <ul>
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                    </ul>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nombre de Usuario</label>
+                    <input type="text" class="form-control" th:field="*{username}" id="username" name="username" placeholder="Escriba aquí el nombre de usuario" required="required">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" th:field="*{email}" id="email" name="email" placeholder="Escriba aquí el email" required="required">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" th:field="*{password}" id="password" name="password" placeholder="Escriba aquí la contraseña" required="required">
+                </div>
+                <div class="mb-3">
+                    <label for="enabled" class="form-label">Habilitado</label>
+                    <select class="form-select" th:field="*{enable}" id="enabled" name="enabled" required="required">
+                        <option th:value="true" th:text="'Sí'"></option>
+                        <option th:value="false" th:text="'No'"></option>
+                    </select>
+                </div>
+                <div class="mb-3"></div>
+                <button type="submit" class="btn btn-dark">Guardar</button>
+                <input type="hidden" th:field="*{id}">
+            </form>
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-primary" th:href="@{/uusuarios/list}">Volver</a>
+</div>
+<script th:src="${@environment.getProperty('app.cdn.bootstrap-js')}"></script>
+</body>
+</html>
