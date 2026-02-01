@@ -1,7 +1,9 @@
 package es.uah.filmAffinityClient.model;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
+import java.util.Set;
 
 public class Usuario {
     private Integer id;
@@ -9,13 +11,13 @@ public class Usuario {
     private String password;
     private String email;
     private boolean enable;
-    private List<Rol> roles;
-    private List<Critica> criticas;
+    private Set<Rol> roles;
+    private Set<Critica> criticas;
 
     public Usuario () {
 
     }
-    public Usuario(Integer id, String username, String password, String email, boolean enable, List<Rol> roles, List<Critica> criticas) {
+    public Usuario(Integer id, String username, String password, String email, boolean enable, Set<Rol> roles, Set<Critica> criticas) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -65,19 +67,28 @@ public class Usuario {
         this.enable = enable;
     }
 
-    public List<Rol> getRoles() {
+    public Set<Rol> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Rol> roles) {
+    @JsonIgnore
+    public String getRolesAsString() {
+        StringBuilder rolesString = new StringBuilder();
+        for (Rol rol : roles) {
+            rolesString.append(rol.getRol()).append(" ");
+        }
+        return rolesString.toString().trim();
+    }
+
+    public void setRoles(Set<Rol> roles) {
         this.roles = roles;
     }
 
-    public List<Critica> getCriticas() {
+    public Set<Critica> getCriticas() {
         return criticas;
     }
 
-    public void setCriticas(List<Critica> criticas) {
+    public void setCriticas(Set<Critica> criticas) {
         this.criticas = criticas;
     }
 

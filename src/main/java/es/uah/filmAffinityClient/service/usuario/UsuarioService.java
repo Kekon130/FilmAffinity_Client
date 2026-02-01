@@ -1,6 +1,9 @@
 package es.uah.filmAffinityClient.service.usuario;
 
 import es.uah.filmAffinityClient.client.IUsuarioClient;
+import es.uah.filmAffinityClient.dto.request.user.UserForm;
+import es.uah.filmAffinityClient.dto.response.usuario.UserResponse;
+import es.uah.filmAffinityClient.mapper.user.IUserMapper;
 import es.uah.filmAffinityClient.model.Usuario;
 import es.uah.filmAffinityClient.paginator.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,21 +16,23 @@ import java.util.List;
 @Service
 public class UsuarioService implements IUsuarioService {
     private final IUsuarioClient usuarioClient;
+    private final IUserMapper userMapper;
 
     @Autowired
-    public UsuarioService (IUsuarioClient usuarioClient) {
+    public UsuarioService (IUsuarioClient usuarioClient, IUserMapper userMapper) {
         this.usuarioClient = usuarioClient;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public Page<Usuario> findAll(Pageable pageable) {
-        List<Usuario> usuarios = this.usuarioClient.findAll();
+    public Page<UserResponse> findAll(Pageable pageable) {
+        List<UserResponse> usuarios = this.usuarioClient.findAll();
         return PageUtils.toPage(usuarios, pageable);
     }
 
     @Override
-    public Usuario findById(Integer id) {
-        Usuario usuario = null;
+    public UserResponse findById(Integer id) {
+        UserResponse usuario = null;
         if (id != null && id > 0) {
             usuario = this.usuarioClient.findById(id);
         }
@@ -35,8 +40,8 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Usuario findByUsername(String username) {
-        Usuario usuario = null;
+    public UserResponse findByUsername(String username) {
+        UserResponse usuario = null;
         if (username != null && !username.isBlank()) {
             usuario = this.usuarioClient.findByUsername(username);
         }
@@ -44,8 +49,8 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Usuario findByEmail(String email) {
-        Usuario usuario = null;
+    public UserResponse findByEmail(String email) {
+        UserResponse usuario = null;
         if (email != null && !email.isBlank()) {
             usuario = this.usuarioClient.findByEmail(email);
         }
@@ -58,26 +63,25 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Usuario save(Usuario usuario) {
-        Usuario newUsuario = null;
-        if (usuario != null && (usuario.getId() == null || usuario.getId() == 0)) {
-            usuario.setId(null);
-            newUsuario = this.usuarioClient.save(usuario);
+    public UserResponse save(UserForm usuario) {
+        UserResponse newUsuario = null;
+        if (usuario != null) {
+            newUsuario = this.usuarioClient.save(this.userMapper.newUser(usuario));
         }
         return newUsuario;
     }
 
     @Override
-    public Usuario update(Usuario usuario) {
-        Usuario updatedUsuario = null;
+    public UserResponse update(UserForm usuario) {
+        UserResponse updatedUsuario = null;
         if (usuario != null && usuario.getId() != null && usuario.getId() > 0) {
-            updatedUsuario = this.usuarioClient.update(usuario);
+            updatedUsuario = this.usuarioClient.update(this.userMapper.updateUser(usuario));
         }
         return updatedUsuario;
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void delete(Integer id) {
         if (id != null && id > 0) {
             this.usuarioClient.deleteById(id);
         }
